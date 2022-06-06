@@ -6,7 +6,7 @@
 #
 #Web-Scanner ha sido desarrollado por @ShadowVMX && @Japinper.
 #
-#Versión actual [v1.0].
+#Versión actual [v1.1].
 #
 
 
@@ -22,7 +22,7 @@ exitingit(){
 }
 
 
-echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v1.0"
+echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v1.1"
 echo "$(tput setaf 11)_________________________________________________________________"
 echo " "
 echo "$(tput setaf 6)Desarrollado para el análisis web por  $(tput setaf 1)-->   $(tput setaf 6)@ShadowVMX @Japinper"
@@ -52,7 +52,9 @@ echo "$(tput setaf 5) "
 echo "--------------------------------------------------------------"
 
 echo " "
-pingit=`echo "$URLNAME" | cut -d "." -f2,3 | cut -d "/" -f1`
+
+pingit=`echo "$URLNAME" | cut -d ":" -f2 | tr '//' ' '`
+
 echo -n "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]IP de la Web solicitada --> $(tput setaf 1)" && ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u 
 
 ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u > IPWeb
