@@ -22,3 +22,11 @@ Web-Scanner (Instalado en el sistema).
 ## Reportes:
 
 Todos los reportes llevadlos a cabo a través de los "Issues".
+
+
+
+**Reportes de usuarios:
+
+1- https://www.paginaweb.com --> Funciona
+
+2- https://paginaweb.com --> No funciona [Se lleva a cabo el arreglo para la versión 1.1]
