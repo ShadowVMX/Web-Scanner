@@ -25,7 +25,7 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 
 
 
-**Reportes de usuarios y posteriores arreglos para versión 1.1:
+## Reportes de usuarios y posteriores arreglos para versión 1.1:
 
 1- https://www.paginaweb.com --> Funciona
 
