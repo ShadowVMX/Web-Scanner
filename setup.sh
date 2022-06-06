@@ -40,7 +40,7 @@ cp Web-Scanner /usr/bin/
 echo " "
 echo "--> Web-Scanner."
 chmod +x extractports
-cp extractpors /usr/bin/
+cp extractports /usr/bin/
 echo " "
 echo "--> extractports"
 
