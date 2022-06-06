@@ -1,0 +1,146 @@
+#!/bin/bash
+#
+#Web-Scanner{Full}
+#
+#Web-Scanner tiene como objetivo analizar los distintos sitios web para la posterior auditoría de los mismos.
+#
+#Web-Scanner ha sido desarrollado por @ShadowVMX && @Japinper.
+#
+#Versión actual [v1.0].
+#
+
+
+trap exitingit SIGINT
+
+exitingit(){
+	echo " "
+	echo " "
+	echo "$(tput setaf 6)[$(tput setaf 1)-$(tput setaf 6)]Saliendo ... "
+	sleep 1
+	echo " "
+	exit
+}
+
+
+echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v1.0"
+echo "$(tput setaf 11)_________________________________________________________________"
+echo " "
+echo "$(tput setaf 6)Desarrollado para el análisis web por  $(tput setaf 1)-->   $(tput setaf 6)@ShadowVMX @Japinper"
+echo "$(tput setaf 11)_________________________________________________________________"
+echo " "
+echo " "
+
+
+
+echo " "
+read -p "$(tput setaf 2)Ingrese el nombre del proyecto: " projectname
+sleep 1
+
+echo " "
+
+rm -r $projectname &> /dev/null
+
+mkdir $projectname
+
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Carpeta creada en la ubicación actual."
+echo " "
+sleep 1
+
+read -p "$(tput setaf 2)Ingrese la URL: " URLNAME
+echo "$(tput setaf 5) "
+
+echo "--------------------------------------------------------------"
+
+echo " "
+pingit=`echo "$URLNAME" | cut -d "." -f2,3 | cut -d "/" -f1`
+echo -n "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]IP de la Web solicitada --> $(tput setaf 1)" && ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u 
+
+ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u > IPWeb
+
+mv IPWeb $projectname
+
+
+echo "$(tput setaf 5) "
+echo "---------------------------------------------------------------"
+echo " "
+
+fullip=`ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u`
+
+echo "$(tput setaf 3)"
+
+whatweb $fullip -v 
+whatweb $fullip -v > whatweb
+
+mv whatweb $projectname
+
+sleep 1.5
+echo "$(tput setaf 5)"
+echo "---------------------------------------------------------------"
+echo " "
+
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reportando información acerca de la IP obtenida: "
+echo "$(tput setaf 3) "
+
+whois $(cat $projectname/IPWeb)
+whois $(cat $projectname/IPWeb) > whoistheIP
+
+mv whoistheIP $projectname
+
+sleep 1.5
+echo "$(tput setaf 5)"
+echo "---------------------------------------------------------------"
+echo " "
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reportando puertos abiertos: "
+echo "$(tput setaf 3) "
+nmap -sS --min-rate 5000 -n $(cat $projectname/IPWeb) -oG PuertosAbiertos
+mv PuertosAbiertos $projectname
+
+echo "$(tput setaf 5)"
+echo "---------------------------------------------------------------"
+echo " "
+
+extractports $projectname/PuertosAbiertos
+
+sleep 1.5
+echo "$(tput setaf 5)"
+echo "---------------------------------------------------------------"
+echo " "
+
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Detectando CMS, verificando rutas, usuarios y reporte completo ... Espere un momento..."
+echo "$(tput setaf 3) "
+
+cmseek -u $URLNAME > CMSdetect
+
+mv CMSdetect $projectname
+
+
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reporte completado."
+
+sleep 1.5
+echo "$(tput setaf 5) "
+echo "---------------------------------------------------------------"
+echo " "
+
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Tiempo de carga de la página web: "
+echo "$(tput setaf 3)"
+curl -s -w 'Testing Website Response Time for :%{url_effective}\n\nLookup Time:\t\t%{time_namelookup}\nConnect Time:\t\t%{time_connect}\nPre-transfer Time:\t%{time_pretransfer}\nStart-transfer Time:\t%{time_starttransfer}\n\nTotal Time:\t\t%{time_total}\n' -o /dev/null $URLNAME
+
+echo "$(tput setaf 5) "
+echo "---------------------------------------------------------------"
+echo " "
+
+
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Fuzzeando subdirectorios de la URL: "
+echo "$(tput setaf 3)"
+
+gobuster dir -w /usr/share/wordlists/dirb/common.txt -u $URLNAME > subdirectorios
+
+mv subdirectorios $projectname
+
+sleep 1.5
+echo " "
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
+
+echo "$(tput setaf 5) "
+echo "---------------------------------------------------------------"
+echo " "
