@@ -33,4 +33,6 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 
 3- Se añade extractports y posterior instalación, bug por falta de componente en el sistema para reporte de nmap.
 
+4- Se añade característica para que, en caso de falla en ping, no continúe reporte por carencia de IP.
+
 
