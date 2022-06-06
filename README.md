@@ -4,3 +4,21 @@
 
 
 Escaner WEB que tiene como objetivo sacar toda la información posible como IP, CMS, Usuarios, Puertos Abiertos, Subdirectorios ... Etc.
+
+
+## Instalación:
+
+git clone https://github.com/ShadowVMX/Web-Scanner.git
+
+cd Web-Scanner
+
+chmod +x setup.sh
+
+./setup.sh
+
+Web-Scanner (Instalado en el sistema).
+
+
+## Reportes:
+
+Todos los reportes llevadlos a cabo a través de los "Issues".
