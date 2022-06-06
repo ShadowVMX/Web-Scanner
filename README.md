@@ -25,11 +25,11 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 
 
 
-**Reportes de usuarios:
+**Reportes de usuarios y posteriores arreglos para versión 1.1:
 
 1- https://www.paginaweb.com --> Funciona
 
-2- https://paginaweb.com --> No funciona [Se lleva a cabo el arreglo para la versión 1.1]
+2- https://paginaweb.com --> No funciona [Se lleva a cabo el arreglo para la siguiente versión.]
 
 3- Se añade extractports y posterior instalación, bug por falta de componente en el sistema para reporte de nmap.
 
