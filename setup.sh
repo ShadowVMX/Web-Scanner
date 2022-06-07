@@ -54,19 +54,3 @@ echo " "
 echo "$(tput setaf 6)[$(tput setaf 1)-$(tput setaf 6)]Completado."
 echo " "
 
-echo "--> gobuster."
-chmod +x Web-Scanner
-cp Web-Scanner /usr/bin/
-echo " "
-echo "--> Web-Scanner."
-chmod +x extractports
-cp extractports /usr/bin/
-echo " "
-echo "--> extractports"
-
-
-
-echo " "
-echo " "
-echo "$(tput setaf 6)[$(tput setaf 1)-$(tput setaf 6)]Completado."
-echo " "
