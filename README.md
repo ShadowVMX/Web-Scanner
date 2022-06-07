@@ -19,6 +19,7 @@ chmod +x setup.sh
 Web-Scanner (Instalado en el sistema).
 
 
+
 ## Reportes:
 
 Todos los reportes llevadlos a cabo a través de los "Issues".
@@ -36,11 +37,17 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 4- Se añade característica para que, en caso de falla en ping, no continúe reporte por carencia de IP.
 
 
-## Se añade para la versión 1.2:
+
+
+## Reportes de usuarios y posteriores arreglos para versión 1.2:
 
 1- Extracción de posibles correos en la URL.
 
 2- Se obtiene toda la información acerca del S.O que corre en la máquina.
+
+
+
+
 
 
 
