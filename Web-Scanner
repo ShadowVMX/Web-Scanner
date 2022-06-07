@@ -6,7 +6,7 @@
 #
 #Web-Scanner ha sido desarrollado por @ShadowVMX && @Japinper.
 #
-#Versión actual [v1.1].
+#Versión actual [v1.2].
 #
 
 
@@ -22,7 +22,7 @@ exitingit(){
 }
 
 
-echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v1.1"
+echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v1.2"
 echo "$(tput setaf 11)_________________________________________________________________"
 echo " "
 echo "$(tput setaf 6)Desarrollado para el análisis web por  $(tput setaf 1)-->   $(tput setaf 6)@ShadowVMX @Japinper"
@@ -70,10 +70,29 @@ fullip=`ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{
 
 echo "$(tput setaf 3)"
 
-whatweb $fullip -v 
-whatweb $fullip -v > whatweb
+whatweb $URLNAME -v 
+
+echo "$(tput setaf 5) "
+echo "---------------------------------------------------------------"
+echo " "
+
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Buscando posibles correos ..."
+echo " "
+
+whatweb $URLNAME -v > whatweb
+whatweb $URLNAME -v > whatwebsmtp
+
+
+html2text whatwebsmtp > posiblescorreos
+grep -o '[[:alnum:]+\.\_\-]*@[[:alnum:]+\.\_\-]*' posiblescorreos | sort | uniq -i > posiblescorreos.txt
+
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
+
+rm posiblescorreos
+rm whatwebsmtp
 
 mv whatweb $projectname
+mv posiblescorreos.txt $projectname
 
 sleep 1.5
 echo "$(tput setaf 5)"
@@ -117,6 +136,27 @@ mv CMSdetect $projectname
 
 
 echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reporte completado."
+
+sleep 1.5
+echo "$(tput setaf 5) "
+echo "---------------------------------------------------------------"
+echo " "
+
+
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Verificando el SO que corre en tu objetivo..."
+echo "$(tput setaf 3)"
+
+nmap -O --min-rate 5000 -n $(cat $projectname/IPWeb) > osversion
+
+cat osversion | grep "Aggressive OS guesses:"
+cat osversion | grep "Aggressive OS guesses:" > SO
+
+mv SO $projectname
+
+rm osversion
+
+echo " "
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reporte de SO completo."
 
 sleep 1.5
 echo "$(tput setaf 5) "
