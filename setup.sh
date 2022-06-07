@@ -26,6 +26,9 @@ echo "--> upgraded."
 apt install cmseek -y &> /dev/null
 echo ""
 echo "--> cmseek."
+apt install -y html2text &> /dev/null
+echo ""
+echo "--> html2text."
 apt install -y whatweb &> /dev/null
 echo " "
 echo "--> whatweb."
@@ -34,6 +37,23 @@ echo " "
 echo "--> nmap."
 apt install -y gobuster &> /dev/null
 echo " "
+echo "--> gobuster."
+chmod +x Web-Scanner
+cp Web-Scanner /usr/bin/
+echo " "
+echo "--> Web-Scanner."
+chmod +x extractports
+cp extractports /usr/bin/
+echo " "
+echo "--> extractports"
+
+
+
+echo " "
+echo " "
+echo "$(tput setaf 6)[$(tput setaf 1)-$(tput setaf 6)]Completado."
+echo " "
+
 echo "--> gobuster."
 chmod +x Web-Scanner
 cp Web-Scanner /usr/bin/
