@@ -5,7 +5,7 @@
 
 
 
-Escaner WEB que tiene como objetivo sacar toda la información posible como IP, CMS, Usuarios, posibles correos, Puertos Abiertos, Subdirectorios ... Etc.
+Escaner WEB que tiene como objetivo sacar toda la información posible como IP, CMS, Usuarios, posibles correos, Puertos Abiertos, Velocidad WEB, posible sistemas operativos, Subdirectorios ... Etc.
 
 
 ## Instalación:
