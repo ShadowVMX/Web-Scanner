@@ -46,7 +46,18 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 2- Se obtiene toda la información acerca del S.O que corre en la máquina.
 
 
+## Funciones:
 
+1- Obtiene la IP de la URL.
+2- Saca plugings y tecnologías usadas incluso versiones.
+3- Obtiene los posibles correos electrónicos si los hay (99%).
+4- Reporta toda la información (whois) a dicha IP pública.
+5- Reportará los puertos abiertos.
+6- Tendrás extractports instalado en el sistema, por lo que podrás parsear más la información de nmap.
+7- Detección de CMS, plugins, usuarios, versiones, etc.
+8- Verificará el SO que corre en dicho servidor. (98% eficacia).
+9- Tiempo de carga de la web 
+10- Fuzzing Web.
 
 
 
