@@ -47,7 +47,7 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 2- Se obtiene toda la información acerca del S.O que corre en la máquina.
 
 
-## ========================================================================
+## ===========================================================
 
 
 ## Funciones versión actual (v1.2):
