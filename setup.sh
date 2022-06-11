@@ -46,11 +46,13 @@ chmod +x extractports
 cp extractports /usr/bin/
 echo " "
 echo "--> extractports"
-
+chmod +x ipsint
+cp ipsint /usr/bin/
+echo " "
+echo "--> ipsint"
 
 
 echo " "
 echo " "
 echo "$(tput setaf 6)[$(tput setaf 1)-$(tput setaf 6)]Completado."
 echo " "
-
