@@ -1,0 +1,30 @@
+#!/bin/bash
+#
+#Osint a IPs manualmente.
+#
+#Osint a IPs con API.
+#
+#
+
+echo " " 
+echo $(tput setaf 6);figlet IpSint
+echo "                     $(tput setaf 3)@ShadowVMX v1.0"
+echo " "
+
+if [[ -z $1 ]] ; then
+	echo " "
+	echo "$(tput setaf 6)[$(tput setaf 1)-$(tput setaf 6)][OPTIONS]"
+	echo " "
+	echo " "
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]$(tput setaf 3)ipsint $(tput setaf 1)--ip $(tput setaf 6)<ip> $(tput setaf 1)--api $(tput setaf 6)<APIKEY>"
+	echo "" 
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]$(tput setaf 3)¿Cómo conseguir $(tput setaf 231)API-KEY? $(tput setaf 1)--> $(tput setaf 6)https://ipgeolocation.io/signup.html"
+	echo " "
+fi
+
+
+if [[ $1 == "--ip" ]] && [[ $3 == "--api" ]] ; then
+	echo "$(tput setaf 231)"
+	curl -s "https://api.ipgeolocation.io/ipgeo?apiKey=$4&ip=$2" | tr ',' '\n' | tr '"' ' ' | cut -d " " -f2,3,4,5,6,7,8
+	echo "" 
+fi
