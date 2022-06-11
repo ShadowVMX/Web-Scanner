@@ -48,10 +48,15 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 2- Se obtiene toda la información acerca del S.O que corre en la máquina.
 
 
+
+## Se añade para la versión 1.3:
+
+1- Token gratuíto para todos los usuarios para usar IPSint que tiene mejor precisión que WhoIS.
+
 ## ===========================================================
 
 
-## Funciones versión actual (v1.2):
+## Funciones versión actual (v1.3):
 
 1- Obtiene la IP de la URL.
 
@@ -61,17 +66,19 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 
 4- Reporta toda la información (whois) a dicha IP pública.
 
-5- Reportará los puertos abiertos.
+5- OSINT a la IP con IPsint.
 
-6- Tendrás extractports instalado en el sistema, por lo que podrás parsear más la información de nmap.
+6- Reportará los puertos abiertos.
 
-7- Detección de CMS, plugins, usuarios, versiones, etc.
+7- Tendrás extractports instalado en el sistema, por lo que podrás parsear más la información de nmap.
 
-8- Verificará el SO que corre en dicho servidor. (98% eficacia).
+8- Detección de CMS, plugins, usuarios, versiones, etc.
 
-9- Tiempo de carga de la web.
+9- Verificará el SO que corre en dicho servidor. (98% eficacia).
 
-10- Fuzzing Web.
+10- Tiempo de carga de la web.
+
+11- Fuzzing Web.
 
 
 
