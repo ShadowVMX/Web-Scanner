@@ -6,7 +6,7 @@
 #
 #Web-Scanner ha sido desarrollado por @ShadowVMX && @Japinper.
 #
-#Versión actual [v1.2].
+#Versión actual [v1.3].
 #
 
 
@@ -22,7 +22,7 @@ exitingit(){
 }
 
 
-echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v1.2"
+echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v1.3"
 echo "$(tput setaf 11)_________________________________________________________________"
 echo " "
 echo "$(tput setaf 6)Desarrollado para el análisis web por  $(tput setaf 1)-->   $(tput setaf 6)@ShadowVMX @Japinper"
@@ -108,6 +108,20 @@ whois $(cat $projectname/IPWeb) > whoistheIP
 mv whoistheIP $projectname
 
 sleep 1.5
+echo "$(tput setaf 5)"
+echo "---------------------------------------------------------------"
+echo " "
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Llevando a cabo OSINT con IPsint: "
+echo "$(tput setaf 3) "
+token="7d1cd5f4bcce46f78d62ceeedd4542da" 
+
+ipsint --ip $(cat $projectname/IPWeb) --api $token 
+ipsint --ip $(cat $projectname/IPWeb) --api $token > IPsint
+
+mv IPsint $projectname
+
+sleep 1.5
+
 echo "$(tput setaf 5)"
 echo "---------------------------------------------------------------"
 echo " "
