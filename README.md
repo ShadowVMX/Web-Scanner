@@ -1,4 +1,4 @@
-# Web-Scanner v1.3
+# Web-Scanner v1.4
 
 
 ![Spider](https://user-images.githubusercontent.com/92258683/172819106-63370bfd-ec49-4363-9d56-aebf3d8b8105.jpg)
@@ -53,10 +53,13 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 
 1- Token gratuíto para todos los usuarios para usar IPSint que tiene mejor precisión que WhoIS.
 
+## Para la versión 1.4 se implanta theHarveste para detectar correos de forma más agresiva, subdominios, hosts, etc.
+
+
 ## ===========================================================
 
 
-## Funciones versión actual (v1.3):
+## Funciones versión actual (v1.4):
 
 1- Obtiene la IP de la URL.
 
@@ -78,7 +81,9 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 
 10- Tiempo de carga de la web.
 
-11- Fuzzing Web.
+11- theHarvester para análisis completo de hosts,subdominios y correos.
+
+12- Fuzzing Web.
 
 
 
