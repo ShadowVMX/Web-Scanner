@@ -1,4 +1,4 @@
-#!/bin/bash
+##!/bin/bash
 #
 #Web-Scanner{Full}
 #
@@ -185,6 +185,19 @@ echo "$(tput setaf 5) "
 echo "---------------------------------------------------------------"
 echo " "
 
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Extrayendo información de forma agresiva (correos, subdominios, hosts...): "
+echo " "
+
+theHarvester -d $URLNAME -l 500 -b google > aggresiveinformation.txt
+
+mv aggresiveinformation.txt $projectname
+
+echo " "
+echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
+
+echo "$(tput setaf 5) "
+echo "---------------------------------------------------------------"
+echo " "
 
 echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Fuzzeando subdirectorios de la URL: "
 echo "$(tput setaf 3)"
