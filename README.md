@@ -53,7 +53,9 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 
 1- Token gratuíto para todos los usuarios para usar IPSint que tiene mejor precisión que WhoIS.
 
-## Para la versión 1.4 se implanta theHarveste para detectar correos de forma más agresiva, subdominios, hosts, etc.
+## Para la versión 1.4:
+
+Se implanta theHarvester para detectar correos de forma más agresiva, subdominios, hosts, etc.
 
 
 ## ===========================================================
