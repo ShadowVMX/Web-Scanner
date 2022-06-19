@@ -38,6 +38,9 @@ echo "--> nmap."
 apt install -y gobuster &> /dev/null
 echo " "
 echo "--> gobuster."
+apt install -y theharvester &> /dev/null
+echo " "
+echo "--> theharvester."
 chmod +x Web-Scanner
 cp Web-Scanner /usr/bin/
 echo " "
@@ -45,14 +48,15 @@ echo "--> Web-Scanner."
 chmod +x extractports
 cp extractports /usr/bin/
 echo " "
-echo "--> extractports"
+echo "--> extractports."
 chmod +x ipsint
 cp ipsint /usr/bin/
 echo " "
-echo "--> ipsint"
+echo "--> ipsint."
 
 
 echo " "
 echo " "
 echo "$(tput setaf 6)[$(tput setaf 1)-$(tput setaf 6)]Completado."
 echo " "
+
