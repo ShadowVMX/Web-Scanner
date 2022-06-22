@@ -1,0 +1,248 @@
+#!/bin/bash
+#
+#Web-Scanner-GUI llevado a cabo a través de una interfaz gráfica para facilidad del usuario.
+#
+#Totalmente fácil de ejecutar y súper intuitivo.
+#
+#Desarrollada para usuarios más novatos y para usuarios que prefieran una interfaz más visual sin uso de terminal.
+#
+#Mismo uso, misma herramienta, mismo rendimiento.
+#
+#############################################################################################################################
+
+
+
+
+
+
+#-------Vamos a solicitar información para creación de Carpeta de Trabajo-----#
+
+whiptail --title "Web-Scanner v2.0" --msgbox "              Herramienta desarrollada por @ShadowVMX y @Japinper para el análisis Web. " 8 100
+
+projectname=$(whiptail --title "Nombre de la carpeta que guardará toda la información " \
+                     --inputbox "Ingrese el nombre a continuación: " 8 78 AnalisisWeb \
+                     3>&1 1>&2 2>&3)
+
+rm -rf $projectname &> /dev/null
+mkdir $projectname
+
+
+
+
+
+
+#-----Solicitamos el nombre de la página web------#
+
+
+URLNAME=$(whiptail --title "URL " \
+                     --inputbox "Ingrese la URL a continuación: " 8 78 https:// \
+                     3>&1 1>&2 2>&3)
+
+
+pingit=`echo "$URLNAME" | cut -d ":" -f2 | tr '//' ' '`
+ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u > IPWeb
+
+mv IPWeb $projectname
+
+
+whiptail --title "Listando la IP del recurso WEB: " \
+         --textbox $projectname/IPWeb 10 50 \
+         --scrolltext
+
+
+
+
+
+#-----------Revisamos con WhatWEB la URL------------#
+whiptail --title "Extrayendo información de URL (Ok para continuar)" --msgbox "Este proceso puede tardar un poco ..." 8 100
+
+
+
+fullip=`ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u`
+
+whatweb $URLNAME -v > whatweb
+
+mv whatweb $projectname
+
+whiptail --title "Listando toda la información acerca de la URL: " \
+         --textbox $projectname/whatweb 30 120 \
+         --scrolltext
+
+
+
+
+
+
+#-------Buscar posibles correos-------------#
+whiptail --title "Vamos a extraer posibles correos de la URL (Ok para continuar)" --msgbox "Este proceso puede tardar un poco ..." 8 100
+
+
+whatweb $URLNAME -v > whatwebsmtp
+
+
+html2text whatwebsmtp > posiblescorreos
+grep -o '[[:alnum:]+\.\_\-]*@[[:alnum:]+\.\_\-]*' posiblescorreos | sort | uniq -i > posiblescorreos.txt
+
+mv posiblescorreos.txt $projectname
+rm whatwebsmtp
+rm posiblescorreos
+
+whiptail --title "Listando posibles correos: " \
+         --textbox $projectname/posiblescorreos.txt 30 120 \
+         --scrolltext
+
+
+
+
+
+
+
+#--------Reporte de información WHOIS IP-------#
+whiptail --title "Vamos a generar un reporte de la IP (Ok para continuar)" --msgbox "Este proceso puede tardar un poco ..." 8 100
+
+
+whois $(cat $projectname/IPWeb) > whoistheIP
+
+mv whoistheIP $projectname
+
+whiptail --title "Listando características de la IP extraída: " \
+         --textbox $projectname/whoistheIP 30 120 \
+         --scrolltext
+
+
+
+
+
+
+
+#--------OSINT de IP con IPSint---------#
+whiptail --title "Se llevará a cabo OSINT con IPSint (Ok para continuar)" --msgbox "Este proceso puede tardar un poco ..." 8 100
+
+
+token="7d1cd5f4bcce46f78d62ceeedd4542da" 
+
+ipsint --ip $(cat $projectname/IPWeb) --api $token > IPsint
+
+mv IPsint $projectname
+
+whiptail --title "Ejecutando OSINT a IP con IPSint: " \
+         --textbox $projectname/IPsint 30 120 \
+         --scrolltext
+
+
+
+
+
+
+#------------Reporte de puertos abiertos---------#
+whiptail --title "Vamos a verificar puertos abiertos (Ok para continuar)" --msgbox "Este proceso puede tardar un poco ..." 8 100
+
+
+nmap -sS --min-rate 5000 -n $(cat $projectname/IPWeb) -oG PuertosAbiertos &> /dev/null
+
+mv PuertosAbiertos $projectname
+
+extractports $projectname/PuertosAbiertos > ExtractPorts
+
+mv ExtractPorts $projectname
+
+whiptail --title "Visualizando los puertos que tienen abiertos: " \
+         --textbox $projectname/ExtractPorts 30 120 \
+         --scrolltext
+
+
+
+
+
+
+
+
+#--------------Reporte acerca del CMS ------------#
+whiptail --title "Extraeremos usuarios, CMS, versiones, plugins, etc (Ok para continuar)" --msgbox "Este proceso puede tardar un poco ..." 8 100
+
+
+cmseek -u $URLNAME > CMSdetect
+
+mv CMSdetect $projectname
+
+
+whiptail --title "Visualizando CMS, usuarios, versiones, plugings, etc: " \
+         --textbox $projectname/CMSdetect 30 120 \
+         --scrolltext
+
+
+
+
+
+
+
+#----------Verificación de SO--------------#
+whiptail --title "Extrayendo SO que corre en el objetivo (Ok para continuar)" --msgbox "Este proceso puede tardar un poco ..." 8 100
+
+
+nmap -O --min-rate 5000 -n $(cat $projectname/IPWeb) > osversion
+
+cat osversion | grep "Aggressive OS guesses:" > SO
+
+mv SO $projectname
+
+whiptail --title "Visualizando versión del SO que corre en su objetivo: " \
+         --textbox $projectname/SO 30 120 \
+         --scrolltext
+
+
+
+
+
+
+
+#--------------Tiempo de carga de la Web-----------------#
+
+whiptail --title "Calcularemos los tiempos de carga Web (Ok para continuar)" --msgbox "Este proceso puede tardar un poco ..." 8 100
+
+
+curl -s -w 'Testing Website Response Time for :%{url_effective}\n\nLookup Time:\t\t%{time_namelookup}\nConnect Time:\t\t%{time_connect}\nPre-transfer Time:\t%{time_pretransfer}\nStart-transfer Time:\t%{time_starttransfer}\n\nTotal Time:\t\t%{time_total}\n' -o /dev/null $URLNAME > timeweb
+
+mv timeweb $projectname
+
+whiptail --title "Visualizando tiempo de carga de la página Web: " \
+         --textbox $projectname/timeweb 30 120 \
+         --scrolltext
+
+
+
+
+
+
+
+#--------------Extraer con TheHarvester--------------#
+whiptail --title "Extrayendo información crítica con Harvester" --msgbox "Este proceso puede tardar un poco ..." 8 100
+
+
+theHarvester -d $URLNAME -l 500 -b google > aggresiveinformation.txt
+
+mv aggresiveinformation.txt $projectname
+
+whiptail --title "Información extraída agresivamente a través de Harvester: " \
+         --textbox $projectname/aggresiveinformation.txt 30 120 \
+         --scrolltext
+
+
+
+
+
+
+
+#--------------Llevando a cabo el Fuzzing----------------#
+whiptail --title "Vamos a Fuzzear (Ok para continuar)" --msgbox "Este proceso puede tardar bastante ..." 8 100
+
+
+gobuster dir -w /usr/share/wordlists/dirb/common.txt -u $URLNAME > subdirectorios
+
+mv subdirectorios $projectname
+
+whiptail --title "Información de Fuzzing obtenida: " \
+         --textbox $projectname/subdirectorios 30 120 \
+         --scrolltext
+
+
