@@ -48,6 +48,10 @@ chmod +x Web-Scanner
 cp Web-Scanner /usr/bin/
 echo " "
 echo "--> Web-Scanner."
+chmod +x Web-Scanner-GUI
+cp Web-Scanner-GUI /usr/bin/
+echo " "
+echo "--> Web-Scanner-GUI."
 chmod +x extractports
 cp extractports /usr/bin/
 echo " "
