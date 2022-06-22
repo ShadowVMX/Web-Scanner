@@ -38,6 +38,9 @@ echo "--> nmap."
 apt install -y gobuster &> /dev/null
 echo " "
 echo "--> gobuster."
+apt install -y whiptail &> /dev/null
+echo " "
+echo "--> WhipTail"
 apt install -y theharvester &> /dev/null
 echo " "
 echo "--> theharvester."
