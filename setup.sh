@@ -49,9 +49,8 @@ cp Web-Scanner /usr/bin/
 echo " "
 echo "--> Web-Scanner."
 chmod +x Web-Scanner-GUI
-cp Web-Scanner-GUI /usr/bin/
 echo " "
-echo "--> Web-Scanner-GUI."
+echo "--> Web-Scanner-GUI. (No se guarda en sistema, hacer manualmente.)"
 chmod +x extractports
 cp extractports /usr/bin/
 echo " "
