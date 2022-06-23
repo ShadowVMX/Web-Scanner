@@ -89,6 +89,9 @@ if [ "$system"  == "Ubuntu" ]; then
 	fi
 fi
 
+cp Web-Scanner /usr/bin 2>/dev/null
+chmod +x Web-Scanner 2>/dev/null
+chmod +x /usr/bin/Web-Scanner 2>/dev/null
 echo " "
 echo "--> Web-Scanner."
 chmod +x Web-Scanner-GUI
@@ -108,4 +111,4 @@ echo " "
 echo " "
 echo "$(tput setaf 6)[$(tput setaf 1)-$(tput setaf 6)]Completado."
 echo " "
-
+rm setup.sh 2>/dev/null
