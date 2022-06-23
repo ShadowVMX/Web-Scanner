@@ -16,36 +16,82 @@ fi
 echo " "
 echo "$(tput setaf 6)[$(tput setaf 1)+$(tput setaf 6)]Installing Web-Scanner..."
 
+system=$(cat /etc/os-release | grep '^NAME=' | awk '{print $1}' FS=' ' | awk '{print $2}' FS='"')
+programs=(cmseek html2text whatweb nmap gobuster whiptail)
+
 echo "$(tput setaf 2)"
 apt update -y &> /dev/null
 echo ""
 echo "--> updated."
-apt full-upgrade -y &> /dev/null
+
+if [ "$system" != "Parrot" ]; then
+	apt full-upgrade -y &> /dev/null
+else
+	parrot-upgrade &>/dev/null
+fi
+
 echo " "
 echo "--> upgraded."
-apt install cmseek -y &> /dev/null
-echo ""
-echo "--> cmseek."
-apt install -y html2text &> /dev/null
-echo ""
-echo "--> html2text."
-apt install -y whatweb &> /dev/null
-echo " "
-echo "--> whatweb."
-apt install -y nmap &> /dev/null
-echo " "
-echo "--> nmap."
-apt install -y gobuster &> /dev/null
-echo " "
-echo "--> gobuster."
-apt install -y whiptail &> /dev/null
-echo " "
-echo "--> WhipTail"
-apt install -y theharvester &> /dev/null
-echo " "
-echo "--> theharvester."
-chmod +x Web-Scanner
-cp Web-Scanner /usr/bin/
+
+if [ "$system"  == "Parrot" ]; then
+	for program in "${programs[@]}"; do
+		which $program &>/dev/null
+		if [ "$(echo $?)" == "1" ]; then
+			echo "\n--> ${program}."
+			apt install "$program" -y &>/dev/null
+		fi
+	done
+	which theHarvester &>/dev/null
+	if [ "$(echo $?)" == "1" ];then
+		echo "\n--> theHarvester."
+	fi
+fi
+
+if [ "$system"  == "Kali" ]; then
+	for program in "${programs[@]}"; do
+		which $program &>/dev/null
+		if [ "$(echo $?)" == "1" ]; then
+			echo "\n--> ${program}."
+			apt install "$program" -y &>/dev/null
+		fi
+	done
+	which theHarvester &>/dev/null
+	if [ "$(echo $?)" == "1" ];then
+	        echo "\n--> theHarvester."
+	fi
+fi
+
+if [ "$system"  == "Arch" ]; then
+	for program in "${programs[@]}"; do
+		which $program &>/dev/null
+		if [ "$(echo $?)" == "1" ]; then
+			echo "\n--> ${program}."
+			pacman -S "$program" --noconfirm &>/dev/null
+		fi
+	done
+	which theHarvester &>/dev/null
+	if [ "$(echo $?)" == "1" ];then
+	        echo "\n--> theHarvester."
+	fi
+fi
+
+if [ "$system"  == "Ubuntu" ]; then
+	for program in "${programs[@]}"; do
+		which $program  &>/dev/null
+		if [ "$(echo $?)" == "1" ]; then
+			echo "\n--> ${program}."
+			apt install "$program" -y &>/dev/null
+		fi
+	done
+	which theHarvester &>/dev/null
+	if [ "$(echo $?)" == "1" ];then
+	        echo "\n--> theHarvester."
+	fi
+fi
+
+cp Web-Scanner /usr/bin 2>/dev/null
+chmod +x Web-Scanner 2>/dev/null
+chmod +x /usr/bin/Web-Scanner 2>/dev/null
 echo " "
 echo "--> Web-Scanner."
 chmod +x Web-Scanner-GUI
@@ -65,4 +111,4 @@ echo " "
 echo " "
 echo "$(tput setaf 6)[$(tput setaf 1)-$(tput setaf 6)]Completado."
 echo " "
-
+rm setup.sh 2>/dev/null
