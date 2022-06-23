@@ -17,7 +17,7 @@ echo " "
 echo "$(tput setaf 6)[$(tput setaf 1)+$(tput setaf 6)]Installing Web-Scanner..."
 
 system=$(cat /etc/os-release | grep '^NAME=' | awk '{print $1}' FS=' ' | awk '{print $2}' FS='"')
-programs=(cmseek html2text whatweb nmap gobuster whiptail theharvester)
+programs=(cmseek html2text whatweb nmap gobuster whiptail)
 
 echo "$(tput setaf 2)"
 apt update -y &> /dev/null
@@ -37,40 +37,56 @@ if [ "$system"  == "Parrot" ]; then
 	for program in "${programs[@]}"; do
 		which $program &>/dev/null
 		if [ "$(echo $?)" == "1" ]; then
-			echo "--> ${program}."
+			echo "\n--> ${program}."
 			apt install "$program" -y &>/dev/null
 		fi
 	done
+	which theHarvester &>/dev/null
+	if [ "$(echo $?)" == "1" ];then
+		echo "\n--> theHarvester."
+	fi
 fi
 
 if [ "$system"  == "Kali" ]; then
 	for program in "${programs[@]}"; do
 		which $program &>/dev/null
 		if [ "$(echo $?)" == "1" ]; then
-			echo "--> ${program}."
+			echo "\n--> ${program}."
 			apt install "$program" -y &>/dev/null
 		fi
 	done
+	which theHarvester &>/dev/null
+	if [ "$(echo $?)" == "1" ];then
+	        echo "\n--> theHarvester."
+	fi
 fi
 
 if [ "$system"  == "Arch" ]; then
 	for program in "${programs[@]}"; do
 		which $program &>/dev/null
 		if [ "$(echo $?)" == "1" ]; then
-			echo "--> ${program}."
+			echo "\n--> ${program}."
 			pacman -S "$program" --noconfirm &>/dev/null
 		fi
 	done
+	which theHarvester &>/dev/null
+	if [ "$(echo $?)" == "1" ];then
+	        echo "\n--> theHarvester."
+	fi
 fi
 
 if [ "$system"  == "Ubuntu" ]; then
 	for program in "${programs[@]}"; do
 		which $program  &>/dev/null
 		if [ "$(echo $?)" == "1" ]; then
-			echo "--> ${program}."
+			echo "\n--> ${program}."
 			apt install "$program" -y &>/dev/null
 		fi
 	done
+	which theHarvester &>/dev/null
+	if [ "$(echo $?)" == "1" ];then
+	        echo "\n--> theHarvester."
+	fi
 fi
 
 echo " "
