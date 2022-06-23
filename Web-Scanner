@@ -1,4 +1,4 @@
-##!/bin/bash
+#!/bin/bash
 #
 #Web-Scanner{Full}
 #
@@ -10,7 +10,7 @@
 #
 
 
-trap exitingit SIGINT
+trap exitingit INT
 
 exitingit(){
 	echo " "
@@ -21,195 +21,189 @@ exitingit(){
 	exit
 }
 
+if [ "$(id -u)" == "0" ]; then
+	echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v2.0"
+	echo "$(tput setaf 11)_________________________________________________________________"
+	echo " "
+	echo "$(tput setaf 6)Desarrollado para el análisis web por  $(tput setaf 1)-->   $(tput setaf 6)@ShadowVMX @Japinper"
+	echo "$(tput setaf 11)_________________________________________________________________"
+	echo " "
+	echo " "
 
-echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v2.0"
-echo "$(tput setaf 11)_________________________________________________________________"
-echo " "
-echo "$(tput setaf 6)Desarrollado para el análisis web por  $(tput setaf 1)-->   $(tput setaf 6)@ShadowVMX @Japinper"
-echo "$(tput setaf 11)_________________________________________________________________"
-echo " "
-echo " "
+	echo " "
+	read -p "$(tput setaf 2)Ingrese el nombre del proyecto: " projectname
+	sleep 1
 
+	echo " "
 
+	rm -r "$projectname" 2>/dev/null
 
-echo " "
-read -p "$(tput setaf 2)Ingrese el nombre del proyecto: " projectname
-sleep 1
+	mkdir "$projectname" 2>/dev/null
 
-echo " "
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Carpeta creada en la ubicación actual."
+	echo " "
+	sleep 1
 
-rm -r $projectname &> /dev/null
+	read -p "$(tput setaf 2)Ingrese la URL: " URLNAME
+	echo "$(tput setaf 5) "
 
-mkdir $projectname
+	echo "--------------------------------------------------------------"
 
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Carpeta creada en la ubicación actual."
-echo " "
-sleep 1
+	echo " "
 
-read -p "$(tput setaf 2)Ingrese la URL: " URLNAME
-echo "$(tput setaf 5) "
+	pingit=`echo "$URLNAME" | sed 's/https:\/\///g' | sed 's/http:\/\///g' | awk '{print $1}' FS="/"`
 
-echo "--------------------------------------------------------------"
+	echo -n "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]IP de la Web solicitada --> $(tput setaf 1)" && ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u
 
-echo " "
+	ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u > IPWeb
 
-pingit=`echo "$URLNAME" | cut -d ":" -f2 | tr '//' ' '`
+	mv IPWeb "$projectname" 2>/dev/null
 
-echo -n "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]IP de la Web solicitada --> $(tput setaf 1)" && ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u 
 
-ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u > IPWeb
+	echo "$(tput setaf 5) "
+	echo "---------------------------------------------------------------"
+	echo " "
 
-mv IPWeb $projectname
+	fullip=`ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u`
 
+	echo "$(tput setaf 3)"
 
-echo "$(tput setaf 5) "
-echo "---------------------------------------------------------------"
-echo " "
+	whatweb $URLNAME -v | tee whatweb
 
-fullip=`ping -c 1 $pingit | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u`
+	echo "$(tput setaf 5) "
+	echo "---------------------------------------------------------------"
+	echo " "
 
-echo "$(tput setaf 3)"
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Buscando posibles correos ..."
+	echo " "
 
-whatweb $URLNAME -v 
+	html2text whatweb > posiblescorreos
+	grep -o '[[:alnum:]+\.\_\-]*@[[:alnum:]+\.\_\-]*' posiblescorreos | sort | uniq -i > posiblescorreos.txt
 
-echo "$(tput setaf 5) "
-echo "---------------------------------------------------------------"
-echo " "
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
 
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Buscando posibles correos ..."
-echo " "
+	rm posiblescorreos 2>/dev/null
 
-whatweb $URLNAME -v > whatweb
-whatweb $URLNAME -v > whatwebsmtp
+	mv whatweb "$projectname" 2>/dev/null
+	mv posiblescorreos.txt "$projectname" 2>/dev/null
 
+	sleep 1.3
+	echo "$(tput setaf 5)"
+	echo "---------------------------------------------------------------"
+	echo " "
 
-html2text whatwebsmtp > posiblescorreos
-grep -o '[[:alnum:]+\.\_\-]*@[[:alnum:]+\.\_\-]*' posiblescorreos | sort | uniq -i > posiblescorreos.txt
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reportando información acerca de la IP obtenida: "
+	echo "$(tput setaf 3) "
 
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
+	whois $(cat "$projectname/IPWeb") | grep -v "%" > "$projectname/whoistheIP"
+	head -n -3 "$projectname/whoistheIP" | sponge "$projectname/whoistheIP"
+	tail -n +4 "$projectname/whoistheIP" | sponge "$projectname/whoistheIP"
+	cat "$projectname/whoistheIP" 2>/dev/null
 
-rm posiblescorreos
-rm whatwebsmtp
+	sleep 1.5
+	echo "$(tput setaf 5)"
+	echo "---------------------------------------------------------------"
+	echo " "
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Llevando a cabo OSINT con IPsint: "
+	echo "$(tput setaf 3) "
+	token="7d1cd5f4bcce46f78d62ceeedd4542da"
 
-mv whatweb $projectname
-mv posiblescorreos.txt $projectname
+	ipsint --ip $(cat "$projectname/IPWeb") --api "$token" | tee "$projectname/IPsint"
 
-sleep 1.5
-echo "$(tput setaf 5)"
-echo "---------------------------------------------------------------"
-echo " "
+	sleep 1.5
 
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reportando información acerca de la IP obtenida: "
-echo "$(tput setaf 3) "
+	echo "$(tput setaf 5)"
+	echo "---------------------------------------------------------------"
+	echo " "
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reportando puertos abiertos: "
+	echo "$(tput setaf 3)"
+	nmap -sS --min-rate 5000 -n $(cat "$projectname/IPWeb") -oG "$projectname/PuertosAbiertos"
 
-whois $(cat $projectname/IPWeb)
-whois $(cat $projectname/IPWeb) > whoistheIP
+	echo "$(tput setaf 5)"
+	echo "---------------------------------------------------------------"
+	echo " "
 
-mv whoistheIP $projectname
+	extractports "$projectname/PuertosAbiertos"
 
-sleep 1.5
-echo "$(tput setaf 5)"
-echo "---------------------------------------------------------------"
-echo " "
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Llevando a cabo OSINT con IPsint: "
-echo "$(tput setaf 3) "
-token="7d1cd5f4bcce46f78d62ceeedd4542da" 
+	sleep 1.5
+	echo "$(tput setaf 5)"
+	echo "---------------------------------------------------------------"
+	echo " "
 
-ipsint --ip $(cat $projectname/IPWeb) --api $token 
-ipsint --ip $(cat $projectname/IPWeb) --api $token > IPsint
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Detectando CMS, verificando rutas, usuarios y reporte completo ... Espere un momento..."
+	echo "$(tput setaf 3)"
 
-mv IPsint $projectname
+	cmseek -u $URLNAME > "$projectname/CMSdetect"
 
-sleep 1.5
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reporte completado."
 
-echo "$(tput setaf 5)"
-echo "---------------------------------------------------------------"
-echo " "
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reportando puertos abiertos: "
-echo "$(tput setaf 3) "
-nmap -sS --min-rate 5000 -n $(cat $projectname/IPWeb) -oG PuertosAbiertos
-mv PuertosAbiertos $projectname
+	sleep 1.5
+	echo "$(tput setaf 5) "
+	echo "---------------------------------------------------------------"
+	echo " "
 
-echo "$(tput setaf 5)"
-echo "---------------------------------------------------------------"
-echo " "
 
-extractports $projectname/PuertosAbiertos
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Verificando el SO que corre en tu objetivo..."
+	echo "$(tput setaf 3)"
 
-sleep 1.5
-echo "$(tput setaf 5)"
-echo "---------------------------------------------------------------"
-echo " "
+	nmap -O --min-rate 5000 -n $(cat "$projectname/IPWeb") > osversion
 
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Detectando CMS, verificando rutas, usuarios y reporte completo ... Espere un momento..."
-echo "$(tput setaf 3) "
+	cat osversion | grep "Aggressive OS guesses:" | tee "$projectname/SO"
 
-cmseek -u $URLNAME > CMSdetect
+	rm osversion 2>/dev/null
 
-mv CMSdetect $projectname
+	echo " "
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reporte de SO completo."
 
+	sleep 1.5
+	echo "$(tput setaf 5) "
+	echo "---------------------------------------------------------------"
+	echo " "
 
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reporte completado."
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Tiempo de carga de la página web: "
+	echo "$(tput setaf 3)"
+	curl -s -w 'Testing Website Response Time for: %{url_effective}\n\nLookup Time:\t\t%{time_namelookup}\nConnect Time:\t\t%{time_connect}\nPre-transfer Time:\t%{time_pretransfer}\nStart-transfer Time:\t%{time_starttransfer}\n\nTotal Time:\t\t%{time_total}\n' -o /dev/null $URLNAME
 
-sleep 1.5
-echo "$(tput setaf 5) "
-echo "---------------------------------------------------------------"
-echo " "
+	echo "$(tput setaf 5) "
+	echo "---------------------------------------------------------------"
+	echo " "
 
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Extrayendo información de forma agresiva (correos, subdominios, hosts...): "
+	echo " "
 
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Verificando el SO que corre en tu objetivo..."
-echo "$(tput setaf 3)"
+	theHarvester -d $URLNAME -l 500 -b google > "$projectname/aggresiveinformation.txt" 2>/dev/null
 
-nmap -O --min-rate 5000 -n $(cat $projectname/IPWeb) > osversion
+	echo " "
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
 
-cat osversion | grep "Aggressive OS guesses:"
-cat osversion | grep "Aggressive OS guesses:" > SO
+	echo "$(tput setaf 5) "
+	echo "---------------------------------------------------------------"
+	echo " "
 
-mv SO $projectname
+	read -p "$(tput setaf 2)Quieres fuzzear directorios? [s/n]: " fuzzing_option
 
-rm osversion
+	if [ "$fuzzing_option" == "y" ] || [ "$fuzzing_option" == "yes" ]; then
+		echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Fuzzeando subdirectorios de la URL: "
+		echo "$(tput setaf 3)"
 
-echo " "
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reporte de SO completo."
+		gobuster dir -w /usr/share/wordlists/dirb/common.txt -u $URLNAME > "$projectname/subdirectorios"
 
-sleep 1.5
-echo "$(tput setaf 5) "
-echo "---------------------------------------------------------------"
-echo " "
+		sleep 1.5
+		echo " "
+		echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
 
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Tiempo de carga de la página web: "
-echo "$(tput setaf 3)"
-curl -s -w 'Testing Website Response Time for :%{url_effective}\n\nLookup Time:\t\t%{time_namelookup}\nConnect Time:\t\t%{time_connect}\nPre-transfer Time:\t%{time_pretransfer}\nStart-transfer Time:\t%{time_starttransfer}\n\nTotal Time:\t\t%{time_total}\n' -o /dev/null $URLNAME
+		echo "$(tput setaf 5) "
+		echo "---------------------------------------------------------------"
+		echo " "
+	fi
 
-echo "$(tput setaf 5) "
-echo "---------------------------------------------------------------"
-echo " "
-
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Extrayendo información de forma agresiva (correos, subdominios, hosts...): "
-echo " "
-
-theHarvester -d $URLNAME -l 500 -b google > aggresiveinformation.txt
-
-mv aggresiveinformation.txt $projectname
-
-echo " "
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
-
-echo "$(tput setaf 5) "
-echo "---------------------------------------------------------------"
-echo " "
-
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Fuzzeando subdirectorios de la URL: "
-echo "$(tput setaf 3)"
-
-gobuster dir -w /usr/share/wordlists/dirb/common.txt -u $URLNAME > subdirectorios
-
-mv subdirectorios $projectname
-
-sleep 1.5
-echo " "
-echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
-
-echo "$(tput setaf 5) "
-echo "---------------------------------------------------------------"
-echo " "
+	echo ""
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Informacion almacenada en $(pwd)/${projectname}"
+	echo ""
+	exit 0
+else
+	echo ""
+	echo "$(tput setaf 6)[$(tput setaf 1)!$(tput setaf 6)]Tienes que ser root para usar Web-Scanner"
+	echo ""
+	exit 0
+fi
