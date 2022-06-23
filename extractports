@@ -11,15 +11,15 @@ if [[ -z $1 ]] ; then
 	exit
 fi
 
-targeted=`cat $1 | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ','` 
-echo $targeted | xclip -sel clip
+targeted=`cat $1 | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ','`
+echo "$targeted" | xclip -sel clip
 
 echo " "
-echo "$(tput setaf 7)[+]Información de escaneo: "
+echo "$(tput setaf 6)[$(tput setaf 1)+$(tput setaf 6)]Información de escaneo: "
 echo ""
 echo -n "[*]$(tput setaf 3)Puertos disponibles: " && cat $1 | grep -oP '\d{1,5}/open' | awk '{print $1}' FS='/' | xargs | tr ' ' ','
 echo " "
-echo -n "$(tput setaf 7)[*]$(tput setaf 3)IP targeteada: " && cat $1 | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u 
+echo -n "$(tput setaf 7)[*]$(tput setaf 3)IP targeteada: " && cat $1 | grep -oP '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | sort -u
 echo " "
 echo "$(tput setaf 4)Puertos copiados en la clipboard."
 echo " "
