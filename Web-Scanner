@@ -6,7 +6,7 @@
 #
 #Web-Scanner ha sido desarrollado por @ShadowVMX && @Japinper.
 #
-#Versión actual [v2.0].
+#Versión actual [v2.2].
 #
 
 
@@ -22,7 +22,7 @@ exitingit(){
 }
 
 if [ "$(id -u)" == "0" ]; then
-	echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v2.0"
+	echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v2.2"
 	echo "$(tput setaf 11)_________________________________________________________________"
 	echo " "
 	echo "$(tput setaf 6)Desarrollado para el análisis web por  $(tput setaf 1)-->   $(tput setaf 6)@ShadowVMX @Japinper"
@@ -148,7 +148,10 @@ if [ "$(id -u)" == "0" ]; then
 
 	nmap -O --min-rate 5000 -n $(cat "$projectname/IPWeb") > osversion
 
-	cat osversion | grep "Aggressive OS guesses:" | tee "$projectname/SO"
+	cat osversion | grep "Running:" >> $projectname/SO
+	cat osversion | grep "Aggressive OS guesses:" >> $projectname/SO
+	cat osversion | grep "OS CPE:" >> $projectname/SO
+	cat osversion | grep "OS details:" >> $projectname/SO
 
 	rm osversion 2>/dev/null
 
@@ -171,7 +174,9 @@ if [ "$(id -u)" == "0" ]; then
 	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Extrayendo información de forma agresiva (correos, subdominios, hosts...): "
 	echo " "
 
-	theHarvester -d $URLNAME -l 500 -b google > "$projectname/aggresiveinformation.txt" 2>/dev/null
+	NameIt=`echo "$URLNAME" | awk -F[/:] '{print $4}'`
+
+	theHarvester -d $NameIt -l 500 -b google > "$projectname/aggresiveinformation.txt" 2>/dev/null
 
 	echo " "
 	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Completado."
