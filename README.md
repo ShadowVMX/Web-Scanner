@@ -61,7 +61,7 @@ Se implanta theHarvester para detectar correos de forma más agresiva, subdomini
 ## ===========================================================
 
 
-## Funciones versión actual (v2.0):
+## Funciones versión actual (v2.2):
 
 1- Obtiene la IP de la URL.
 
