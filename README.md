@@ -57,6 +57,10 @@ Todos los reportes llevadlos a cabo a través de los "Issues".
 
 Se implanta theHarvester para detectar correos de forma más agresiva, subdominios, hosts, etc.
 
+## Para la versión 2.0:
+
+Se aumenta el desarrollo de la herramienta para usarla a través de una GUI interactiva para los usuarios más principiantes.
+
 
 ## ===========================================================
 
