@@ -65,7 +65,7 @@ Se aumenta el desarrollo de la herramienta para usarla a través de una GUI inte
 ## ===========================================================
 
 
-## Funciones versión actual (v2.2):
+## Funciones versión actual (v3.0):
 
 1- Obtiene la IP de la URL.
 
@@ -79,17 +79,19 @@ Se aumenta el desarrollo de la herramienta para usarla a través de una GUI inte
 
 6- Reportará los puertos abiertos.
 
-7- Tendrás extractports instalado en el sistema, por lo que podrás parsear más la información de nmap.
+7- Versión de los servicios que corren en el target.
 
-8- Detección de CMS, plugins, usuarios, versiones, etc.
+8- Tendrás extractports instalado en el sistema, por lo que podrás parsear más la información de nmap.
 
-9- Verificará el SO que corre en dicho servidor. (98% eficacia).
+9- Detección de CMS, plugins, usuarios, versiones, etc.
 
-10- Tiempo de carga de la web.
+10- Verificará el SO que corre en dicho servidor. (98% eficacia).
 
-11- theHarvester para análisis completo de hosts,subdominios y correos.
+11- Tiempo de carga de la web.
 
-12- Fuzzing Web.
+12- theHarvester para análisis completo de hosts,subdominios y correos.
+
+13- Fuzzing Web (Opcional).
 
 **Se implementa Web-Scanner-GUI a través de una interfaz gráfica.**
 
