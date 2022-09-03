@@ -128,6 +128,15 @@ if [ "$(id -u)" == "0" ]; then
 	sleep 1.5
 	echo "$(tput setaf 5)"
 	echo "---------------------------------------------------------------"
+
+	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Reportando la versión de los puertos abiertos: "
+	echo "$(tput setaf 3)"
+
+	nmap -sCV --min-rate 5000 -n $(cat "$projectname/IPWeb") -oN "$projectname/VersionPuertosAbiertos"
+
+	sleep 1.5
+	echo "$(tput setaf 5)"
+	echo "---------------------------------------------------------------"
 	echo " "
 
 	echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Detectando CMS, verificando rutas, usuarios y reporte completo ... Espere un momento..."
@@ -185,7 +194,7 @@ if [ "$(id -u)" == "0" ]; then
 	echo "---------------------------------------------------------------"
 	echo " "
 
-	read -p "$(tput setaf 2)Quieres fuzzear directorios? [s/n]: " fuzzing_option
+	read -p "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Quieres fuzzear directorios? [s/n]: " fuzzing_option
 
 	if [ "$fuzzing_option" == "y" ] || [ "$fuzzing_option" == "yes" ]; then
 		echo "$(tput setaf 6)[$(tput setaf 1)*$(tput setaf 6)]Fuzzeando subdirectorios de la URL: "
