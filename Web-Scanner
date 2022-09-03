@@ -6,7 +6,7 @@
 #
 #Web-Scanner ha sido desarrollado por @ShadowVMX && @Japinper.
 #
-#Versión actual [v2.2].
+#Versión actual [v3.0].
 #
 
 
@@ -22,7 +22,7 @@ exitingit(){
 }
 
 if [ "$(id -u)" == "0" ]; then
-	echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v2.2"
+	echo -n "$(tput setaf 6)" ; figlet Web-Scanner ; echo "$(tput setaf 3)                                                             v3.0"
 	echo "$(tput setaf 11)_________________________________________________________________"
 	echo " "
 	echo "$(tput setaf 6)Desarrollado para el análisis web por  $(tput setaf 1)-->   $(tput setaf 6)@ShadowVMX @Japinper"
